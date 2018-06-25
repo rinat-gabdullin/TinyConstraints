@@ -28,7 +28,6 @@ class ActivationPool {
         guard let pool = pools.popLast() else {
             return
         }
-
         pool.activate()
     }
 
@@ -43,9 +42,7 @@ class ActivationPool {
     }
 
     func activate() {
-        constraints.forEach { (constraint) in
-            constraint.isActive = true
-        }
+        constraints.activate()
     }
 }
 
