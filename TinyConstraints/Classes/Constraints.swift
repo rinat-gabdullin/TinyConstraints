@@ -42,7 +42,11 @@ public extension Collection where Iterator.Element == Constraint {
     func activate() {
         
         if let constraints = self as? Constraints {
-            Constraint.activate(constraints)
+            if let pool = ActivationPool.current {
+                pool.add(constraints: constraints)
+            } else {
+                Constraint.activate(constraints)
+            }
         }
     }
     
@@ -63,7 +67,12 @@ public extension Constraint {
     }
 
     func set(active: Bool) -> Self {
-        isActive = active
+        if let pool = ActivationPool.current {
+            pool.add(constraint: self)
+        } else {
+            isActive = active
+        }
+
         return self
     }
 }
